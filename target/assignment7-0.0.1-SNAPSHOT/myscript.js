@@ -1,9 +1,9 @@
-/**
- * 
- */
-
-function loadXMLDoc(url,cfunc)
+function loadXMLDoc()
 {
+    var url = "http://localhost:8080/mwa/assignment7/myeavesdrop";
+
+    var xmlhttp;
+    var txt,x,xx,i;
     if (window.XMLHttpRequest)
     {// code for IE7+, Firefox, Chrome, Opera, Safari
         xmlhttp=new XMLHttpRequest();
@@ -12,59 +12,43 @@ function loadXMLDoc(url,cfunc)
     {// code for IE6, IE5
         xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
     }
-    xmlhttp.onreadystatechange=cfunc;
-    xmlhttp.open("GET",url,false);
-    xmlhttp.send();
-}
-function myFunction()
-{
-    loadXMLDoc("http://localhost:8080/assignment7/myeavesdrop",function()
+    xmlhttp.onreadystatechange=function()
     {
         if (xmlhttp.readyState==4 && xmlhttp.status==200)
         {
-            xmlDoc=xmlhttp.responseXML;
-
-            document.getElementById("meetingData").innerHTML = "";
-
-            var x=xmlDoc.getElementsByTagName("meeting");
-
-            var table = document.createElement("table");
-            table.setAttribute('border','1');
-            table.setAttribute('width','50%')
-
-            var tr = document.createElement('tr');
-
-            var td1 = document.createElement('td');
-            var td2 = document.createElement('td');
-
-            var text1 = document.createTextNode("Project");
-            var text2 = document.createTextNode("Count");
-
-            td1.appendChild(text1);
-            td2.appendChild(text2);
-            tr.appendChild(td1);
-            tr.appendChild(td2);
-
-            table.appendChild(tr);
-
-            for (var i=0;i<x.length;i++)
+            txt="<table class=\"table table-hover\"><thead><tr><th>Project</th><th>Count</th></tr></thead><tbody>";
+            x=xmlhttp.responseXML.documentElement.getElementsByTagName("meeting");
+            for (i=0;i<x.length;i++)
             {
-                tr = document.createElement('tr');
-
-                td1 = document.createElement('td');
-                td2 = document.createElement('td');
-
-                text1 = document.createTextNode(x[i].getElementsByTagName("name")[0].childNodes[0].nodeValue);
-                text2 = document.createTextNode(x[i].getElementsByTagName("count")[0].childNodes[0].nodeValue);
-
-                td1.appendChild(text1);
-                td2.appendChild(text2);
-                tr.appendChild(td1);
-                tr.appendChild(td2);
-
-                table.appendChild(tr);
+                txt=txt + "<tr>";
+                xx=x[i].getElementsByTagName("name");
+                {
+                    try
+                    {
+                        txt=txt + "<td>" + xx[0].firstChild.nodeValue + "</td>";
+                    }
+                    catch (er)
+                    {
+                        txt=txt + "<td> </td>";
+                    }
+                }
+                xx=x[i].getElementsByTagName("count");
+                {
+                    try
+                    {
+                        txt=txt + "<td>" + xx[0].firstChild.nodeValue + "</td>";
+                    }
+                    catch (er)
+                    {
+                        txt=txt + "<td> </td>";
+                    }
+                }
+                txt=txt + "</tr>";
             }
-            document.getElementById("meetingData").appendChild(table);
+            txt=txt + "</tbody></table>";
+            document.getElementById('meetingData').innerHTML=txt;
         }
-    });
+    }
+    xmlhttp.open("GET",url,true);
+    xmlhttp.send();
 }
