@@ -26,8 +26,11 @@ function myFunction()
 
             document.getElementById("meetingData").innerHTML = "";
 
-            var table = document.createElement('table');
             var x=xmlDoc.getElementsByTagName("meeting");
+
+            var table = document.createElement("table");
+            table.setAttribute('border','1');
+            table.setAttribute('width','50%')
 
             var tr = document.createElement('tr');
 
