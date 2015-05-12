@@ -19,11 +19,11 @@ xmlhttp.send();
 }
 function myFunction()
 {
-loadXMLDoc("http://localhost:8080/assignment7/helloworld/helloworld",function()
+loadXMLDoc("http://localhost:8080/assignment7/myeavesdrop",function()
   {
   if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {
-    document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+    document.getElementById("meetings").innerHTML=xmlhttp.responseText;
     }
   });
 }
